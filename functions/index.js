@@ -23,3 +23,4 @@ functions.logger.log('Thumbnail created at', tempFilePath);
 
 // Once the thumbnail has been uploaded delete the local file to free up disk space.
 //return fs.unlinkSync(tempFilePath);
+return fs.unlinkSync(tempFilePath);
