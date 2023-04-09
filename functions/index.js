@@ -80,7 +80,8 @@ exports.generateThumbnail = functions.storage
     const thumbFileName = `thumb_${fileName}`;
     const thumbFilePath = path.join(path.dirname(filePath), thumbFileName);
     // Uploading the thumbnail.
-    await bucket.upload(tempFilePath, {
+    const uploadBucket = admin.storage().bucket("file-ground-thumbnails");
+    await uploadBucket.upload(tempFilePath, {
       destination: thumbFilePath,
       metadata,
     });
