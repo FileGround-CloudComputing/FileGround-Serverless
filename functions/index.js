@@ -98,8 +98,8 @@ exports.generateThumbnail = functions.storage
       key: uuidOne,
       likes: "23",
       uploader_id: "Alan Turing",
-      filePath: tempFilePath,
-      thumbnailFilePath: thumbFilePath,
+      imageFilePath: `gs://file-ground-images/${filePath}`,
+      thumbnailFilePath: `gs://file-ground-thumbnails/${thumbFilePath}`,
     });
     // Once the thumbnail has been uploaded delete the local file to free up disk space.
     return fs.unlinkSync(tempFilePath);
