@@ -77,8 +77,8 @@ exports.generateThumbnail = functions.storage
     const thumbFileName = `thumb_${fileName}`;
     const thumbFilePath = path.join(path.dirname(filePath), thumbFileName);
     // Uploading the thumbnail.
-    await bucket.upload(tempFilePath, {
-      destination: thumbFilePath,
+    await bucket.upload(`${tempFilePath}/images`, {
+      destination: `${thumbFilePath}/images`,
       metadata,
     });
     // Once the thumbnail has been uploaded delete the local file to free up disk space.
