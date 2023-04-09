@@ -24,7 +24,7 @@ const spawn = require("child-process-promise").spawn;
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
-const uuidv4 = require("uuid/v4");
+const uuid = require("uuid");
 // [END import]
 
 // [START generateThumbnail]
@@ -34,6 +34,7 @@ const uuidv4 = require("uuid/v4");
  */
 // [START generateThumbnailTrigger]
 exports.generateThumbnail = functions.storage
+  .bucket("file-ground-images")
   .object()
   .onFinalize(async (object) => {
     // [END generateThumbnailTrigger]
@@ -90,16 +91,14 @@ exports.generateThumbnail = functions.storage
     // Get a database reference to our blog
     const db = getDatabase();
     const ref = db.ref("file-ground-grounds");
-    const uuid = uuidv4();
+    const uuidOne = uuid.v4();
     const photosRef = ref.child("photos");
-    photosRef.set({
-      photo1: {
-        key: uuid,
-        likes: "23",
-        uploader_id: "Alan Turing",
-        filePath: tempFilePath,
-        thumbnailFilePath: thumbFilePath,
-      },
+    photosRef.push({
+      key: uuidOne,
+      likes: "23",
+      uploader_id: "Alan Turing",
+      filePath: tempFilePath,
+      thumbnailFilePath: thumbFilePath,
     });
     // Once the thumbnail has been uploaded delete the local file to free up disk space.
     return fs.unlinkSync(tempFilePath);
