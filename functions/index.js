@@ -77,9 +77,27 @@ exports.generateThumbnail = functions.storage
     const thumbFileName = `thumb_${fileName}`;
     const thumbFilePath = path.join(path.dirname(filePath), thumbFileName);
     // Uploading the thumbnail.
-    await bucket.upload(`${tempFilePath}/images`, {
-      destination: `${thumbFilePath}/images`,
+    await bucket.upload(tempFilePath, {
+      destination: thumbFilePath,
       metadata,
+    });
+
+    // Import Admin SDK
+    const { getDatabase } = require("firebase-admin/database");
+
+    // Get a database reference to our blog
+    const db = getDatabase();
+    const ref = db.ref("file-ground-grounds");
+    const usersRef = ref.child("users");
+    usersRef.set({
+      alanisawesome: {
+        date_of_birth: "June 23, 1912",
+        full_name: "Alan Turing",
+      },
+      gracehop: {
+        date_of_birth: "December 9, 1906",
+        full_name: "Grace Hopper",
+      },
     });
     // Once the thumbnail has been uploaded delete the local file to free up disk space.
     return fs.unlinkSync(tempFilePath);
