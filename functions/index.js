@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-"use strict";
+
+("use strict");
 
 // [START import]
 const functions = require("firebase-functions");
@@ -23,6 +24,7 @@ const spawn = require("child-process-promise").spawn;
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
+const uuidv4 = require("uuid/v4");
 // [END import]
 
 // [START generateThumbnail]
@@ -88,15 +90,15 @@ exports.generateThumbnail = functions.storage
     // Get a database reference to our blog
     const db = getDatabase();
     const ref = db.ref("file-ground-grounds");
-    const usersRef = ref.child("users");
-    usersRef.set({
-      alanisawesome: {
-        date_of_birth: "June 23, 1912",
-        full_name: "Alan Turing",
-      },
-      gracehop: {
-        date_of_birth: "December 9, 1906",
-        full_name: "Grace Hopper",
+    const uuid = uuidv4();
+    const photosRef = ref.child("photos");
+    photosRef.set({
+      photo1: {
+        key: uuid,
+        likes: "23",
+        uploader_id: "Alan Turing",
+        filePath: tempFilePath,
+        thumbnailFilePath: thumbFilePath,
       },
     });
     // Once the thumbnail has been uploaded delete the local file to free up disk space.
