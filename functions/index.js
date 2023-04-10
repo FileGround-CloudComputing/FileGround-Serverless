@@ -25,6 +25,7 @@ const path = require("path");
 const os = require("os");
 const fs = require("fs");
 const uuid = require("uuid");
+let fileIdNum;
 // [END import]
 
 // [START generateThumbnail]
@@ -91,15 +92,47 @@ exports.generateThumbnail = functions.storage
 
     // Get a database reference to our blog
     const db = getDatabase();
-    const ref = db.ref("file-ground-grounds");
+    const ref = db.ref("Ground");
+    // const refFileId = db.ref("Ground/fileId");
+    await ref
+      .get("value")
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          fileIdNum = snapshot.child("fileId/fileId").val();
+          console.log(fileIdNum);
+          console.log(typeof fileIdNum);
+        } else {
+          ref.child("fileId").set({
+            fileId: 0,
+          });
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    fileIdNum = fileIdNum + 1;
+    await ref.child("fileId").set({
+      fileId: fileIdNum,
+    });
     const uuidOne = uuid.v4();
-    const photosRef = ref.child("photos");
-    photosRef.push({
-      key: uuidOne,
+    let arr = [];
+    arr = filePath.split("-");
+    const splitGid = arr[0];
+    const splitUserId = arr[1];
+    let arr2 = [];
+    arr2 = arr[2].split(".");
+    const splitUserName = arr2[0];
+
+    const photosRef = ref.child(`123456/Photos/123456-${fileIdNum}`);
+    photosRef.set({
+      id: splitGid,
+      src: `gs://file-ground-images/${filePath}`,
+      thumbnail: uuidOne,
+      uploadedAt: `gs://file-ground-thumbnails/${thumbFilePath}`,
+      uploaderId: splitUserId,
+      uploaderName: splitUserName,
       likes: "23",
-      uploader_id: "Alan Turing",
-      imageFilePath: `gs://file-ground-images/${filePath}`,
-      thumbnailFilePath: `gs://file-ground-thumbnails/${thumbFilePath}`,
     });
     // Once the thumbnail has been uploaded delete the local file to free up disk space.
     return fs.unlinkSync(tempFilePath);
