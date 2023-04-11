@@ -94,17 +94,34 @@ exports.generateThumbnail = functions.storage
     const db = getDatabase();
     const ref = db.ref("Ground");
     // const refFileId = db.ref("Ground/fileId");
+    // gid-userid-username.png
+    const uuidOne1 = uuid.v4();
+    const uuidOne2 = uuid.v4();
+    let arr = [];
+    arr = filePath.split("-");
+    let arr3 = [];
+    arr3 = arr[0].split("/");
+    const splitGid = arr3[0];
+    console.log(splitGid);
+    const splitUserId = arr[1];
+    let arr2 = [];
+    arr2 = arr[2].split(".");
+    const splitUserName = arr2[0];
+    // let arr2 = [];
+    // arr2 = arr[3].split(".");
+    // const splitOriginalFileName = arr2[0];
     await ref
       .get("value")
       .then((snapshot) => {
         if (snapshot.exists()) {
-          fileIdNum = snapshot.child("fileId/fileId").val();
+          fileIdNum = snapshot.child(`fileId${splitGid}/fileId`).val();
           console.log(fileIdNum);
           console.log(typeof fileIdNum);
         } else {
-          ref.child("fileId").set({
+          ref.child(`fileId${splitGid}`).set({
             fileId: 0,
           });
+          fileIdNum = 0;
           console.log("No data available");
         }
       })
@@ -112,20 +129,9 @@ exports.generateThumbnail = functions.storage
         console.error(error);
       });
     fileIdNum = fileIdNum + 1;
-    await ref.child("fileId").set({
+    await ref.child(`fileId${splitGid}`).set({
       fileId: fileIdNum,
     });
-    const uuidOne1 = uuid.v4();
-    const uuidOne2 = uuid.v4();
-    let arr = [];
-    arr = filePath.split("-");
-    const splitGid = arr[0];
-    const splitUserId = arr[1];
-    const splitUserName = arr[2];
-    const splitLikes = arr[3];
-    let arr2 = [];
-    arr2 = arr[4].split(".");
-    const splitOriginalFileName = arr2[0];
 
     const photosRef = ref.child(`${splitGid}/Photos/${splitGid}-${fileIdNum}`);
     photosRef.set({
@@ -135,7 +141,7 @@ exports.generateThumbnail = functions.storage
       uploadedAt: `gs://file-ground-thumbnails/${thumbFilePath}`,
       uploaderId: splitUserId,
       uploaderName: splitUserName,
-      likes: splitLikes,
+      likes: "23",
     });
     // Once the thumbnail has been uploaded delete the local file to free up disk space.
     return fs.unlinkSync(tempFilePath);
