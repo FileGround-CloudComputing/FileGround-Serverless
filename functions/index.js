@@ -137,7 +137,7 @@ exports.generateThumbnail = functions.storage
     photosRef.set({
       id: fileIdNum,
       src: `gs://file-ground-images/${filePath}`,
-      thumbnail: uuidOne1,
+      thumbnail: `thumb_${fileIdNum}`,
       uploadedAt: `gs://file-ground-thumbnails/${thumbFilePath}`,
       uploaderId: splitUserId,
       uploaderName: splitUserName,
