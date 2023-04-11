@@ -135,7 +135,7 @@ exports.generateThumbnail = functions.storage
 
     const photosRef = ref.child(`${splitGid}/Photos/${splitGid}-${fileIdNum}`);
     photosRef.set({
-      id: uuidOne2,
+      id: fileIdNum,
       src: `gs://file-ground-images/${filePath}`,
       thumbnail: uuidOne1,
       uploadedAt: `gs://file-ground-thumbnails/${thumbFilePath}`,
