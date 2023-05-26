@@ -1,4 +1,4 @@
-const functions = require('firebase-functions');
+const functions = require("firebase-functions");
 const path = require('path');
 const admin = require('firebase-admin');
 admin.initializeApp();
@@ -21,5 +21,5 @@ exports.setThumbnailRTDB = functions.storage
 
     const fileName = thumbnailName.replace(THUMB_PREFIX, '');
 
-    return admin.database().ref().child('/${thumbnailDir}/photos/${fileName}').update({ thumbnail: thumbnailPath })
+    return admin.database().ref().child(`${thumbnailDir}/photos/${fileName}`).update({ thumbnail: thumbnailPath })
   });
