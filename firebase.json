@@ -1,7 +1,4 @@
 {
-  "database": {
-    "rules": "database.rules.json"
-  },
   "functions": [
     {
       "source": "functions",
@@ -13,8 +10,5 @@
         "firebase-debug.*.log"
       ]
     }
-  ],
-  "storage": {
-    "rules": "storage.rules"
-  }
+  ]
 }
