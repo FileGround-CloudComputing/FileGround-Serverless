@@ -6,7 +6,8 @@
 
 [functions/index.js](functions/index.js)에 코드가 담겨 있다.
 
-해당 코드는 썸네일 이미지의 파일명이 항상 `THUMB_PREFIX + (이미지의 파일명)` 정의된다고 가정하고 있다.
+해당 코드는 썸네일 이미지의 파일명이 항상 `THUMB_PREFIX + (이미지의 파일명)`으로 정의된다고 가정하고 있다.
+특수 문자 처리 대응에 대한 추가 작업이 필요할 수도 있다.
 
 ## Sample Database Structure
 
