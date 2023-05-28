@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-("use strict");
+"use strict";
 
 // [START import]
 const functions = require("firebase-functions");
@@ -24,8 +23,6 @@ const spawn = require("child-process-promise").spawn;
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
-const uuid = require("uuid");
-let fileIdNum;
 // [END import]
 
 // [START generateThumbnail]
@@ -35,7 +32,6 @@ let fileIdNum;
  */
 // [START generateThumbnailTrigger]
 exports.generateThumbnail = functions.storage
-  .bucket("file-ground-images")
   .object()
   .onFinalize(async (object) => {
     // [END generateThumbnailTrigger]
@@ -81,67 +77,9 @@ exports.generateThumbnail = functions.storage
     const thumbFileName = `thumb_${fileName}`;
     const thumbFilePath = path.join(path.dirname(filePath), thumbFileName);
     // Uploading the thumbnail.
-    const uploadBucket = admin.storage().bucket("file-ground-thumbnails");
-    await uploadBucket.upload(tempFilePath, {
+    await bucket.upload(tempFilePath, {
       destination: thumbFilePath,
       metadata,
-    });
-
-    // Import Admin SDK
-    const { getDatabase } = require("firebase-admin/database");
-
-    // Get a database reference to our blog
-    const db = getDatabase();
-    const ref = db.ref("Ground");
-    // const refFileId = db.ref("Ground/fileId");
-    // gid-userid-username.png
-    const uuidOne1 = uuid.v4();
-    const uuidOne2 = uuid.v4();
-    let arr = [];
-    arr = filePath.split("-");
-    let arr3 = [];
-    arr3 = arr[0].split("/");
-    const splitGid = arr3[0];
-    console.log(splitGid);
-    const splitUserId = arr[1];
-    let arr2 = [];
-    arr2 = arr[2].split(".");
-    const splitUserName = arr2[0];
-    // let arr2 = [];
-    // arr2 = arr[3].split(".");
-    // const splitOriginalFileName = arr2[0];
-    await ref
-      .get("value")
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          fileIdNum = snapshot.child(`fileId${splitGid}/fileId`).val();
-          console.log(fileIdNum);
-          console.log(typeof fileIdNum);
-        } else {
-          ref.child(`fileId${splitGid}`).set({
-            fileId: 0,
-          });
-          fileIdNum = 0;
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    fileIdNum = fileIdNum + 1;
-    await ref.child(`fileId${splitGid}`).set({
-      fileId: fileIdNum,
-    });
-
-    const photosRef = ref.child(`${splitGid}/Photos/${splitGid}-${fileIdNum}`);
-    photosRef.set({
-      id: fileIdNum,
-      src: `gs://file-ground-images/${filePath}`,
-      thumbnail: `thumb_${fileIdNum}`,
-      uploadedAt: `gs://file-ground-thumbnails/${thumbFilePath}`,
-      uploaderId: splitUserId,
-      uploaderName: splitUserName,
-      likes: "23",
     });
     // Once the thumbnail has been uploaded delete the local file to free up disk space.
     return fs.unlinkSync(tempFilePath);
