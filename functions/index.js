@@ -36,7 +36,7 @@ let fileIdNum;
  */
 // [START generateThumbnailTrigger]
 
-exports.backupDeletedArticle = functions.database.ref('/grounds/{rowId}')
+exports.backupDeletedArticle = functions.database.instance('file-ground-grounds').ref('/grounds/{rowId}')
     .onDelete((snapshot, context) => {
       const bucket = admin.storage().bucket();
       const rowId = context.params.rowId; // Store the value of rowId in a variable
@@ -44,7 +44,9 @@ exports.backupDeletedArticle = functions.database.ref('/grounds/{rowId}')
       const deleteOptions = {
         prefix: `grounds/${rowId}/`
       };
-  
+      // Perform additional permission checks if necessary
+      // For example, you can compare the 'uid' to the authenticated user's ID
+
       return bucket.deleteFiles(deleteOptions)
         .then(() => {
           console.log(`All the Firebase Storage files in grounds/${rowId}/ have been deleted`);
