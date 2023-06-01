@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
@@ -167,3 +168,5 @@ exports.generateThumbnail = functions.storage
     // [END thumbnailGeneration]
   });
 // [END generateThumbnail]
+=======
+>>>>>>> 8adb81d3935d91714f9d81db1d407d3238a5d789
