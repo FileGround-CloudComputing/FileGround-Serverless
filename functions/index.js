@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 ("use strict");
 
 // [START import]
@@ -22,6 +5,7 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
 const spawn = require("child-process-promise").spawn;
+const { backupDeletedArticle } = require("./rtdbtostorage.js");
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
@@ -29,32 +13,16 @@ const uuid = require("uuid");
 let fileIdNum;
 // [END import]
 
+// [START delete also storage]
+
+exports.backupDeletedArticle = backupDeletedArticle;
+
 // [START generateThumbnail]
 /**
  * When an image is uploaded in the Storage bucket We generate a thumbnail automatically using
  * ImageMagick.
  */
 // [START generateThumbnailTrigger]
-
-exports.backupDeletedArticle = functions.database.instance('file-ground-grounds').ref('/grounds/{rowId}')
-    .onDelete((snapshot, context) => {
-      const bucket = admin.storage().bucket();
-      const rowId = context.params.rowId; // Store the value of rowId in a variable
-
-      const deleteOptions = {
-        prefix: `grounds/${rowId}/`
-      };
-      // Perform additional permission checks if necessary
-      // For example, you can compare the 'uid' to the authenticated user's ID
-
-      return bucket.deleteFiles(deleteOptions)
-        .then(() => {
-          console.log(`All the Firebase Storage files in grounds/${rowId}/ have been deleted`);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    });
 
 exports.generateThumbnail = functions.storage
   .bucket("file-ground-images")
@@ -170,5 +138,3 @@ exports.generateThumbnail = functions.storage
     // [END thumbnailGeneration]
   });
 // [END generateThumbnail]
-=======
->>>>>>> 8adb81d3935d91714f9d81db1d407d3238a5d789
