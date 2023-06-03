@@ -1,8 +1,8 @@
 import { pubsub, storage, database } from "firebase-functions";
-import { validateDeadline } from "./functions/validateDeadline";
-import { generateThumbnail } from "./functions/generateThumbnail";
-import { setThumbnailDb } from "./functions/setThumbnailDb";
-import { backupDeletedArticle } from "./functions/backupDeletedArticle";
+import { validateDeadline } from "./validateDeadline.js";
+import { generateThumbnail } from "./generateThumbnail.js";
+import { setThumbnailDb } from "./setThumbnailDb.js";
+import { backupDeletedArticle } from "./backupDeletedArticle.js";
 export const validateDeadlineFunction = pubsub
   .schedule("10 * * * *")
   .timeZone("Asia/Seoul")

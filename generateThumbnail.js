@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import spawn from "child-process-promise";
 import { logger } from "firebase-functions/v1";
-import { admin } from "../firebase";
+import { admin } from "./firebase.js";
 export const generateThumbnail = async (object) => {
   // [END generateThumbnailTrigger]
   // [START eventAttributes]

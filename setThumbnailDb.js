@@ -1,5 +1,5 @@
 import path from "path";
-import { admin } from "../firebase";
+import { admin } from "./firebase.js";
 
 const THUMB_PREFIX = "thumb_";
 export const setThumbnailDb = async (object) => {

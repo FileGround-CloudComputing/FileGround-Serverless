@@ -1,8 +1,8 @@
 import { logger } from "firebase-functions";
-import { db } from "../firebase";
+import { admin } from "./firebase.js";
 export const validateDeadline = async (context) => {
   while (true) {
-    const groundRef = db.ref("grounds");
+    const groundRef = admin.database().ref("grounds");
     const result = await groundRef
       .orderByChild("createdAt")
       .limitToFirst(5)
