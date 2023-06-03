@@ -1,5 +1,5 @@
 import { pubsub } from "firebase-functions";
-import { validateDeadline } from "./validateDeadline";
+import { validateDeadline } from "./functions/validateDeadline";
 export const validateDeadlineFunction = pubsub
   .schedule("10 * * * *")
   .timeZone("Asia/Seoul")

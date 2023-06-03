@@ -1,5 +1,5 @@
 import { logger } from "firebase-functions";
-import { db } from "./firebase";
+import { db } from "../firebase";
 export const validateDeadline = async (context) => {
   while (true) {
     const groundRef = db.ref("grounds");
