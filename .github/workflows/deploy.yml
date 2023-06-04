@@ -26,9 +26,6 @@ jobs:
       run: |
         npm install
 
-    - name: Install dotenv
-      run: npm install dotenv
-
     - name: create dotenv
       run: |
         touch .env
