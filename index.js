@@ -15,7 +15,7 @@ export const generateThumbnailFunction = storage
 export const setThumbnailDbFunction = storage
   .object()
   .onFinalize(setThumbnailDb);
-
+//Delete Storage data when rtdb file is deleted
 export const backupDeletedArticleFunction = database
   .ref("/grounds/{rowId}")
   .onDelete(backupDeletedArticle);
